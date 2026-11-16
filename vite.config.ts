@@ -14,6 +14,37 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000,
+    port: 5173,
+    proxy: {
+      "/admin": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/ready": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/worker-status": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/health": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/register": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/certificates": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+      "/media": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+      },
+    },
   },
 });
+

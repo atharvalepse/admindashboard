@@ -264,4 +264,9 @@ export class MockAdminService implements IAdminService {
   }
 }
 
-export const defaultAdminService = new MockAdminService();
+import { backendAdminService } from "./backendAdminService";
+
+export { BackendAdminService } from "./backendAdminService";
+export const defaultAdminService = backendAdminService;
+
+

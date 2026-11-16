@@ -253,3 +253,4 @@ export const CoursesView: React.FC = () => {
     </div>
   );
 };
+

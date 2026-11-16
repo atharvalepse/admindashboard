@@ -298,3 +298,4 @@ export const WhatsAppView: React.FC = () => {
     </div>
   );
 };
+

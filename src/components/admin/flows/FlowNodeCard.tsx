@@ -159,3 +159,4 @@ export const FlowNodeCard = memo(({ id, type, data, selected }: NodeProps) => {
 });
 
 FlowNodeCard.displayName = "FlowNodeCard";
+

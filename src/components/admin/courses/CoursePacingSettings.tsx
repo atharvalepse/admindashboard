@@ -111,3 +111,4 @@ export const CoursePacingSettings: React.FC<CoursePacingSettingsProps> = ({
     </div>
   );
 };
+

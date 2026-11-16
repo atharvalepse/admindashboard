@@ -491,3 +491,4 @@ export const mockTelegramSettings: TelegramSettings = {
   is_connected: true,
   webhook_url: "https://api.ekatra.one/telegram/webhook",
 };
+

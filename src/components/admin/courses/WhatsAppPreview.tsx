@@ -101,3 +101,4 @@ export const WhatsAppPreview: React.FC<WhatsAppPreviewProps> = ({
     </div>
   );
 };
+

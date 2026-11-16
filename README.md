@@ -142,3 +142,4 @@ const customService = new MyCustomBackendService();
 
 The UI supports instant Light and Dark modes using Tailwind CSS variables configured in `src/styles.css`.
 Click the sun/moon toggle in the top bar to switch themes, or pass `defaultDarkMode={true}` to `AdminDashboard`.
+

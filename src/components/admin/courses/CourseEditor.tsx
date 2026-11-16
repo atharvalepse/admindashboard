@@ -358,3 +358,4 @@ export const CourseEditor: React.FC<CourseEditorProps> = ({
     </div>
   );
 };
+

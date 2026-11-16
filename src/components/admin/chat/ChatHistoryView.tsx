@@ -392,3 +392,4 @@ export const ChatHistoryView: React.FC = () => {
     </div>
   );
 };
+

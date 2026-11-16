@@ -2,6 +2,7 @@ import React from "react";
 import { useAdmin } from "@/context/AdminContext";
 import { Sun, Moon, Bell, RefreshCw } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BackendConnectionModal } from "./BackendConnectionModal";
 
 interface AdminHeaderProps {
   darkMode: boolean;
@@ -69,6 +70,8 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
       </div>
 
       <div className="flex items-center gap-2">
+        <BackendConnectionModal />
+
         <Button
           variant="outline"
           size="sm"
@@ -107,3 +110,4 @@ export const AdminHeader: React.FC<AdminHeaderProps> = ({
     </header>
   );
 };
+

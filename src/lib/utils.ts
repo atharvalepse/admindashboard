@@ -12,3 +12,4 @@ export function generateUUID() {
     return v.toString(16);
   });
 }
+

@@ -231,3 +231,4 @@ export type AdminSectionId =
   | "telegram"
   | "users"
   | "settings";
+
