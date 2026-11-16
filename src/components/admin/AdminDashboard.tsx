@@ -3,6 +3,7 @@ import { AdminProvider, useAdmin } from "@/context/AdminContext";
 import { AdminLayout } from "./shell/AdminLayout";
 import { OverviewView } from "./overview/OverviewView";
 import { CoursesView } from "./courses/CoursesView";
+import { CertificatesView } from "./certificates/CertificatesView";
 import { FlowsView } from "./flows/FlowsView";
 import { ChatHistoryView } from "./chat/ChatHistoryView";
 import { AnalyticsView } from "./analytics/AnalyticsView";
@@ -35,6 +36,7 @@ const DashboardContent: React.FC<{ darkMode: boolean; onToggleDarkMode: () => vo
         <>
           {activeSection === "overview" && <OverviewView />}
           {activeSection === "courses" && <CoursesView />}
+          {activeSection === "certificates" && <CertificatesView />}
           {activeSection === "flows" && <FlowsView />}
           {activeSection === "chat" && <ChatHistoryView />}
           {activeSection === "analytics" && <AnalyticsView />}

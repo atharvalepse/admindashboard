@@ -10,6 +10,7 @@ import type {
   User,
   UserRole,
   UserStatus,
+  Certificate,
 } from "@/types";
 import {
   mockCourses,
@@ -58,6 +59,16 @@ export interface IAdminService {
   inviteUser(email: string, full_name: string, role: UserRole): Promise<User>;
   updateUserRole(id: string, role: UserRole): Promise<User>;
   updateUserStatus(id: string, status: UserStatus): Promise<User>;
+
+  // Certificates
+  listCertificates(): Promise<Certificate[]>;
+  sendCertificate(enrollmentId: number): Promise<{ ok: boolean; messageId?: number }>;
+  generateCertificate(data: {
+    phone: string;
+    courseId: number;
+    learnerName: string;
+    sendNow?: boolean;
+  }): Promise<Certificate>;
 }
 
 export class MockAdminService implements IAdminService {
@@ -261,6 +272,45 @@ export class MockAdminService implements IAdminService {
     if (!user) throw new Error("User not found");
     user.status = status;
     return { ...user };
+  }
+
+  // Certificates Mock
+  async listCertificates(): Promise<Certificate[]> {
+    return [
+      {
+        id: 1,
+        code: "1-DEMO_CERT_HASH",
+        learnerName: "Asha Sharma",
+        courseTitle: "Climate Action & Renewable Energy",
+        issuedAt: new Date().toISOString(),
+        enrollmentId: 1,
+        pdfUrl: "/certificates/1-DEMO_CERT_HASH.pdf",
+        previewUrl: "/certificates/1-DEMO_CERT_HASH",
+      },
+    ];
+  }
+
+  async sendCertificate(enrollmentId: number): Promise<{ ok: boolean; messageId?: number }> {
+    return { ok: true, messageId: 101 };
+  }
+
+  async generateCertificate(data: {
+    phone: string;
+    courseId: number;
+    learnerName: string;
+    sendNow?: boolean;
+  }): Promise<Certificate> {
+    const code = `${Math.floor(Math.random() * 1000)}-${generateUUID().slice(0, 16)}`;
+    return {
+      id: Math.floor(Math.random() * 1000),
+      code,
+      learnerName: data.learnerName,
+      courseTitle: "Course Completion Certificate",
+      issuedAt: new Date().toISOString(),
+      enrollmentId: Math.floor(Math.random() * 1000),
+      pdfUrl: `/certificates/${code}.pdf`,
+      previewUrl: `/certificates/${code}`,
+    };
   }
 }
 

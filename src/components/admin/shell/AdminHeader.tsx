@@ -18,6 +18,10 @@ const SECTION_TITLES: Record<string, { title: string; subtitle: string }> = {
     title: "Course Management",
     subtitle: "Create, structure, and publish multi-day courses with automated quizzes",
   },
+  certificates: {
+    title: "Certificates & Credentials",
+    subtitle: "Generate, verify, and send completion certificates directly to WhatsApp",
+  },
   flows: {
     title: "WhatsApp Flow Canvas",
     subtitle: "Visually design interactive conversation bots, keyword triggers, and fallbacks",

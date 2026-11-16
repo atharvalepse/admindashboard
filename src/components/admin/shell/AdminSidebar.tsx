@@ -13,6 +13,7 @@ import {
   MessageSquare,
   Workflow,
   Sparkles,
+  Award,
 } from "lucide-react";
 
 interface NavItem {
@@ -32,6 +33,7 @@ export const AdminSidebar: React.FC = () => {
   const navItems: NavItem[] = [
     { id: "overview", name: "Overview", icon: LayoutDashboard },
     { id: "courses", name: "Courses", icon: BookOpen },
+    { id: "certificates", name: "Certificates", icon: Award },
     { id: "flows", name: "Flow Canvas", icon: Workflow },
     {
       id: "chat",

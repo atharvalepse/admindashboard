@@ -221,9 +221,21 @@ export interface User {
   last_login_at: string;
 }
 
+export interface Certificate {
+  id: number;
+  code: string;
+  learnerName: string;
+  courseTitle: string;
+  issuedAt: string;
+  enrollmentId: number;
+  pdfUrl?: string;
+  previewUrl?: string;
+}
+
 export type AdminSectionId =
   | "overview"
   | "courses"
+  | "certificates"
   | "flows"
   | "chat"
   | "analytics"

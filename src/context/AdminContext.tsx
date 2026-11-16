@@ -8,6 +8,7 @@ import type {
   WhatsAppSettings,
   TelegramSettings,
   User,
+  Certificate,
   AdminSectionId,
 } from "@/types";
 import { type IAdminService, defaultAdminService } from "@/services/adminService";
@@ -24,6 +25,7 @@ interface AdminContextValue {
   chats: ChatConversation[];
   templates: WhatsAppTemplate[];
   users: User[];
+  certificates: Certificate[];
   whatsappSettings: WhatsAppSettings | null;
   telegramSettings: TelegramSettings | null;
   
@@ -48,6 +50,13 @@ interface AdminContextValue {
   sendMessage: (chatId: string, content: string, template?: string) => Promise<void>;
   resolveAttention: (chatId: string) => Promise<void>;
   inviteUser: (email: string, name: string, role: any) => Promise<void>;
+  sendCertificate: (enrollmentId: number) => Promise<void>;
+  generateCertificate: (data: {
+    phone: string;
+    courseId: number;
+    learnerName: string;
+    sendNow?: boolean;
+  }) => Promise<Certificate>;
 }
 
 const AdminContext = createContext<AdminContextValue | undefined>(undefined);
@@ -70,6 +79,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({
   const [chats, setChats] = useState<ChatConversation[]>([]);
   const [templates, setTemplates] = useState<WhatsAppTemplate[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [whatsappSettings, setWhatsappSettings] = useState<WhatsAppSettings | null>(null);
   const [telegramSettings, setTelegramSettings] = useState<TelegramSettings | null>(null);
   const [loading, setLoading] = useState(true);
@@ -81,7 +91,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({
   const refreshData = useCallback(async () => {
     try {
       setLoading(true);
-      const [ov, cs, fl, ch, tpl, us, wa, tg] = await Promise.all([
+      const [ov, cs, fl, ch, tpl, us, wa, tg, certs] = await Promise.all([
         service.getOverview(),
         service.listCourses(),
         service.listFlows(),
@@ -90,6 +100,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({
         service.listUsers(),
         service.getWhatsAppSettings(),
         service.getTelegramSettings(),
+        service.listCertificates().catch(() => []),
       ]);
       setOverview(ov);
       setCourses(cs);
@@ -99,6 +110,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({
       setUsers(us);
       setWhatsappSettings(wa);
       setTelegramSettings(tg);
+      setCertificates(certs);
     } catch (err) {
       console.error("Failed to load admin data", err);
     } finally {
@@ -157,6 +169,24 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({
     setUsers(updatedUsers);
   };
 
+  const sendCertificate = async (enrollmentId: number) => {
+    await service.sendCertificate(enrollmentId);
+    const updatedCerts = await service.listCertificates();
+    setCertificates(updatedCerts);
+  };
+
+  const generateCertificate = async (data: {
+    phone: string;
+    courseId: number;
+    learnerName: string;
+    sendNow?: boolean;
+  }) => {
+    const cert = await service.generateCertificate(data);
+    const updatedCerts = await service.listCertificates();
+    setCertificates(updatedCerts);
+    return cert;
+  };
+
   return (
     <AdminContext.Provider
       value={{
@@ -169,6 +199,7 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({
         chats,
         templates,
         users,
+        certificates,
         whatsappSettings,
         telegramSettings,
         loading,
@@ -187,6 +218,8 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({
         sendMessage,
         resolveAttention,
         inviteUser,
+        sendCertificate,
+        generateCertificate,
       }}
     >
       {children}

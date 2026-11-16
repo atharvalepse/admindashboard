@@ -402,3 +402,58 @@ test("BackendAdminService handles user creation", async () => {
     global.fetch = originalFetch;
   }
 });
+
+test("BackendAdminService handles certificates listing and sending", async () => {
+  const service = new BackendAdminService();
+  const originalFetch = global.fetch;
+
+  let resendCalledWithId: number | null = null;
+
+  global.fetch = async (url: any, init?: any) => {
+    const s = String(url);
+    if (s.endsWith("/admin/certificates")) {
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          certificates: [
+            {
+              id: 42,
+              code: "10-HMAC1234567890AB",
+              learnerName: "Rohan Verma",
+              courseTitle: "Demo Course",
+              issuedAt: "2026-11-16T15:30:00Z",
+              enrollmentId: 10,
+            },
+          ],
+        }),
+      } as any;
+    }
+    if (s.includes("/admin/certificates/10/resend") && init?.method === "POST") {
+      resendCalledWithId = 10;
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({ ok: true, messageId: 999 }),
+      } as any;
+    }
+    return { ok: false, status: 404 } as any;
+  };
+
+  try {
+    const certs = await service.listCertificates();
+    assert.equal(certs.length, 1);
+    const cert = certs[0]!;
+    assert.equal(cert.learnerName, "Rohan Verma");
+    assert.equal(cert.code, "10-HMAC1234567890AB");
+    assert.ok(cert.pdfUrl?.includes("10-HMAC1234567890AB.pdf"));
+
+    const result = await service.sendCertificate(10);
+    assert.equal(result.ok, true);
+    assert.equal(result.messageId, 999);
+    assert.equal(resendCalledWithId, 10);
+  } finally {
+    global.fetch = originalFetch;
+  }
+});
+
